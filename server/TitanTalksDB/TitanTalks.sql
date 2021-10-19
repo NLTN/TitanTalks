@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS "User" (
 );
 CREATE TABLE IF NOT EXISTS "User_Post" (
 	"Post_id"	TEXT NOT NULL UNIQUE,
-	"Username"	TEXT NOT NULL,
+	"User_id"	TEXT NOT NULL,
 	"Body"		TEXT,
 	"Create_date"	TEXT NOT NULL,
 	"Modified_date"	TEXT,
