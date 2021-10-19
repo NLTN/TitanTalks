@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS "Attachment" (
 	"Attach_id"	TEXT NOT NULL UNIQUE,
 	"Post_id"	TEXT NOT NULL,
 	"File_type"	BLOB NOT NULL,
-	"Created_date"	TEXT NOT NULL,
+	"Create_date"	TEXT NOT NULL,
 	PRIMARY KEY("Attach_id"),
 	FOREIGN KEY("Post_id") REFERENCES "User_Post"("Post_id")
 );
