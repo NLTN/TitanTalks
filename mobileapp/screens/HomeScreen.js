@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import { Text, View, Image, ScrollView, TextInput, StyleSheet, FlatList } from 'react-native';
+import React, { Component, useEffect, useState } from 'react';
+import { Alert, Text, View, Image, ScrollView, TextInput, StyleSheet, FlatList, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as PostService from '../services/PostService';
 
 // An array of mock data for posts
 let MOCKDATA = [
@@ -37,12 +38,14 @@ class PostItem extends Component {
 					flexDirection: 'row',
 				}}>
 					{/* Displays user's avatar */}
-					<Image
-					source = {{uri: this.props.item.Avatar}}
-					style={{ width: 100, height: 100, borderRadius: 200/2, marginTop: 22, marginBottom: 22, marginLeft: 22 }}>
-					</Image>
+					<TouchableOpacity>
+						<Image
+						source = {{uri: this.props.item.Avatar}}
+						style={{ width: 100, height: 100, borderRadius: 200/2, marginTop: 22, marginBottom: 22, marginLeft: 22 }}>
+						</Image>
+					</TouchableOpacity>
 					{/* Displays username */}
-					<Text style={{ padding: 10, fontSize: 24, marginTop: 44 }}>{this.props.item.Username}</Text>
+					<Text style={{ padding: 10, fontSize: 16, marginTop: 52 }}>{this.props.item.Username}</Text>
 				</View>
 				{/* Display main image attachment */}
 				<Image 
@@ -52,10 +55,36 @@ class PostItem extends Component {
 				<View style={{ 
 					flex: 1, 
 					flexDirection: 'column', 
-					height: 100 
+					//height: 100 
 				}}>
+					{/* For like, comment and share buttons, set flexDirection to row so they can be on same line */}
+					<View style = {{
+						flexDirection: 'row',
+					}}>
+						{/* Display like button */}
+						<TouchableOpacity>
+							<Image
+								source = { require("../assets/like-icon.png") }
+								style = {{ width: 50, height: 50, marginTop: 22, marginLeft: 22 }}>
+							</Image>
+						</TouchableOpacity>
+						{/* Display comment button */}
+						<TouchableOpacity>
+							<Image
+								source = { require("../assets/comment-icon.png") }
+								style = {{ width: 50, height: 50, marginTop: 22, marginLeft: 22 }}>
+							</Image>
+						</TouchableOpacity>
+						{/* Display share button */}
+						<TouchableOpacity>
+							<Image
+								source = { require("../assets/share-icon.png") }
+								style = {{ width: 50, height: 50, marginTop: 22, marginLeft: 22 }}>
+							</Image>
+						</TouchableOpacity>
+					</View>
 					{/* Displays post title and post body (post text) */}
-					<Text style={{ padding: 10, fontSize: 24 }}>{this.props.item.Post_title}</Text>
+					<Text style={{ padding: 10, fontSize: 20 }}>{this.props.item.Post_title}</Text>
 					<Text style={styles.flatListItem}>{this.props.item.Body}</Text>
 				</View>
 			{/* Creates a thin border between each post */}
@@ -69,24 +98,35 @@ class PostItem extends Component {
 	}
 }
 
-const HomeScreen = ({ navigation }) => {
-	return (
-		<>
-		<View style={{ marginTop: 0 }}>
-				<FlatList
-					data={MOCKDATA} // Store MOCKDATA array in variable
-					
-					// Display posts
-					renderItem={({ item, index }) => {
-						return (
-							<PostItem item={item} index={index}>
 
-							</PostItem>);
-					} }
-					keyExtractor={(item, index) => index.toString()}
-				>
-				</FlatList>
-			</View></>
+const HomeScreen = ({ navigation }) => {
+
+	const [posts, setPosts] = React.useState(null);
+
+	// useEffect ensures that the retrievePosts function is run immediatedly once the HomeScreen is loaded
+	React.useEffect(() => {
+		// Function that gets post data from the database
+		async function retrievePosts() {
+			const data = await PostService.getAllPostsAsync();
+			setPosts(data);
+			
+			if (data) {
+				// Display pop up of data
+				Alert.alert('Read Success', JSON.stringify(data, null, 2));
+			}
+		}
+		retrievePosts();
+	}, []);
+
+	// Display posts variable in console to confirm that it has the post JSON data
+	console.log("Post Data:")
+	console.log(posts)
+
+	// Need to find a way to display the posts variable in return()
+	return (
+		<View>
+			
+		</View>
 	);
 }
 
