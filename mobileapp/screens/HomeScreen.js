@@ -118,7 +118,7 @@ const HomeScreen = ({ navigation }) => {
 		// Function that gets post data from the database
 		async function retrievePosts() {
 			const serverResponse = await PostService.getAllPostsAsync();
-			setPosts(serverResponse);
+			setPosts(serverResponse.data);
 			
 			if (serverResponse) {
 				// Display pop up of data
@@ -136,7 +136,7 @@ const HomeScreen = ({ navigation }) => {
 	return (
 		<View>
 			<FlatList
-				data={posts.data}
+				data={posts}
 				renderItem={({item})=>
 				<View
 				style={{
