@@ -96,7 +96,7 @@ const HomeScreen = ({ navigation }) => {
 				</View>
 				{/* Display main image attachment */}
 				<Image
-				  source={{ uri: item.files.file_location }}
+				  source={{ uri: item.files[0].file_location }}
 				  style={{ height: 480 }}
 				></Image>
 				<View
